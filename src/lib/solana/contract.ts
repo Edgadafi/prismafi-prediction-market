@@ -52,12 +52,12 @@ export interface UserPosition {
 /**
  * Obtiene el Program instance para interactuar con el smart contract
  */
-export function getProgram(wallet: any): Program<PredictionMarketIDL> {
+export function getProgram(wallet: any): Program {
   const connection = new Connection(getCurrentRpcEndpoint(), 'confirmed')
   const provider = new AnchorProvider(connection, wallet, {
     commitment: 'confirmed',
   })
-  return new Program(IDL, PROGRAM_ID, provider)
+  return new Program(IDL as any, provider)
 }
 
 // ============================================================================
@@ -247,6 +247,7 @@ export async function fetchMarket(
 ): Promise<Market | null> {
   try {
     const program = getProgram(wallet)
+    // @ts-ignore
     const marketAccount = await program.account.market.fetch(marketPubkey)
 
     return {
@@ -275,9 +276,10 @@ export async function fetchMarket(
 export async function fetchAllMarkets(wallet: any): Promise<Market[]> {
   try {
     const program = getProgram(wallet)
+    // @ts-ignore
     const markets = await program.account.market.all()
 
-    return markets.map((m) => ({
+    return markets.map((m: any) => ({
       publicKey: m.publicKey,
       authority: m.account.authority,
       question: m.account.question,
@@ -309,6 +311,7 @@ export async function fetchUserPosition(
     const program = getProgram(wallet)
     const [positionPDA] = await getUserPositionPDA(marketPubkey, userPubkey)
 
+    // @ts-ignore
     const positionAccount = await program.account.userPosition.fetch(
       positionPDA
     )
@@ -337,6 +340,7 @@ export async function fetchUserPositions(
 ): Promise<UserPosition[]> {
   try {
     const program = getProgram(wallet)
+    // @ts-ignore
     const positions = await program.account.userPosition.all([
       {
         memcmp: {
@@ -346,7 +350,7 @@ export async function fetchUserPositions(
       },
     ])
 
-    return positions.map((p) => ({
+    return positions.map((p: any) => ({
       publicKey: p.publicKey,
       user: p.account.user,
       market: p.account.market,

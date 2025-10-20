@@ -12,6 +12,7 @@
  */
 
 export const IDL = {
+  address: '6b4kfh6kr9X6ka2H5C1qhK1jdnGmX65Ni85pC5qzLQB7',
   version: '0.1.0',
   name: 'prediction_market',
   instructions: [
@@ -408,6 +409,12 @@ export const IDL = {
       msg: 'This is a losing position',
     },
   ],
+  metadata: {
+    name: 'prediction_market',
+    version: '0.1.0',
+    spec: '0.1.0',
+    address: '6b4kfh6kr9X6ka2H5C1qhK1jdnGmX65Ni85pC5qzLQB7',
+  },
 } as const
 
 export type PredictionMarketIDL = typeof IDL
